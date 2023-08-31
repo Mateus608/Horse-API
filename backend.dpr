@@ -4,13 +4,19 @@ program backend;
 
 {$R *.res}
 
-uses Horse, Horse.Jhonson, Horse.Commons, System.JSON, System.SysUtils;
+uses Horse, Horse.Jhonson, Horse.BasicAuthentication, Horse.Commons, System.JSON, System.SysUtils;
 
 var
   Users: TJSONArray;
 
 begin
   THorse.Use(Jhonson);
+
+  THorse.Use(HorseBasicAuthentication(
+    function(const AUsername, APassword: string): Boolean
+    begin
+      Result := AUsername.Equals('user') and APassword.Equals('123');
+    end));
 
   Users := TJSONArray.Create;
 
